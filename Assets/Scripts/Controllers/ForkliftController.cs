@@ -64,6 +64,11 @@ public class ForkliftController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_engineRunning) return;
+        if (_currentFuel.Value <= 0f)
+        {
+            _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+            return;
+        }
         ConsumeFuel();
         HandleMovement();
         HandleFork();
@@ -73,7 +78,8 @@ public class ForkliftController : MonoBehaviour
     {
         Vector2 input = _controls.Forklift.Move.ReadValue<Vector2>();
 
-        float speedMultiplier = _currentFuel.Value < lowFuelThreshold ? lowFuelSpeedMultiplier : 1f;
+        float fuelPercent = _currentFuel.Value / maxFuel * 100f;
+        float speedMultiplier = fuelPercent < lowFuelThreshold ? lowFuelSpeedMultiplier : 1f;
 
         Vector3 moveDirection = transform.forward * input.y * moveSpeed * speedMultiplier;
         _rb.linearVelocity = new Vector3(moveDirection.x, _rb.linearVelocity.y, moveDirection.z);
