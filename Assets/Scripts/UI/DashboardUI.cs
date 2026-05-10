@@ -16,16 +16,16 @@ public class DashboardUI : MonoBehaviour
     {
         controlsText.text =
             "УПРАВЛЕНИЕ:\n" +
-            "T - двигатель " +
+            "T - двигатель вкл/выкл " +
             "WASD - движение\n" +
-            "Q/E - вилки " +
-            "C - камера";
+            "Q/E - вилки поднять/опустить " +
+            "C - поменять камеру";
 
         _forkliftController.FuelStream
             .Subscribe(fuel =>
             {
                 fuelSlider.value = fuel / _forkliftController.MaxFuel;
-                fuelPercent.text = $"Топлива осталось:\n{fuel / _forkliftController.MaxFuel * 100f:F0}%";
+                fuelPercent.text = $"Топлива осталось:{fuel / _forkliftController.MaxFuel * 100f:F0}%";
             })
             .AddTo(this);
     }

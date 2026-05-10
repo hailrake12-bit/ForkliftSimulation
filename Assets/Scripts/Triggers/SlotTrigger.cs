@@ -9,7 +9,6 @@ public class SlotTrigger : MonoBehaviour
 
     [Inject] private ForkController _forkController;
 
-    public void SetForkController(ForkController controller) => _forkController = controller;
 
     private void OnTriggerEnter(Collider other)
     {

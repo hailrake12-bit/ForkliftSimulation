@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using Zenject;
 
 public class CargoAnimator : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CargoAnimator : MonoBehaviour
     [Header("Launch Animation")]
     [SerializeField] private float launchHeight = 20f;
     [SerializeField] private float launchDuration = 5f;
+
+    [Inject] private CargoFactory _cargoFactory;
 
     private Rigidbody _rb;
 
@@ -41,7 +44,7 @@ public class CargoAnimator : MonoBehaviour
             .SetDelay(launchDuration * 0.3f)
             .OnComplete(() =>
             {
-                FindFirstObjectByType<GameManager>().SpawnCargo();
+                _cargoFactory.SpawnCargo();
                 Destroy(gameObject);
             });
     }

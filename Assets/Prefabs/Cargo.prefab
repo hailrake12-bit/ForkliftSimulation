@@ -66,7 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a76d881f44ea5bf47af5931219472893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CargoTrigger
-  forkController: {fileID: 0}
 --- !u!1 &658542408275849926
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +78,8 @@ GameObject:
   - component: {fileID: 5616036271896705409}
   - component: {fileID: 6514834070862123881}
   - component: {fileID: 5205045348916097309}
+  - component: {fileID: 8005326995064631253}
+  - component: {fileID: 8513269349533529620}
   m_Layer: 0
   m_Name: Cargo
   m_TagString: Cargo
@@ -150,7 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CargoAnimator
   spawnHeight: 10
   spawnDuration: 5
-  rotationSpeed: 90
   launchHeight: 60
   launchDuration: 5
 --- !u!65 &5205045348916097309
@@ -174,6 +174,36 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6194887, y: 0.29518008, z: 0.59618473}
   m_Center: {x: -0.00039434433, y: 0.23799771, z: -0.0002565384}
+--- !u!114 &8005326995064631253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658542408275849926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08eca9f7688a0a24685b89133b020c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Zenject::Zenject.GameObjectContext
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 8513269349533529620}
+  _installerPrefabs: []
+  _autoRun: 1
+  _kernel: {fileID: 0}
+--- !u!114 &8513269349533529620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658542408275849926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c54543b20dedf4b8c495e45705ec82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CargoInstaller
 --- !u!1 &780413643901283544
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +382,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotTrigger
   side: 3
-  forkController: {fileID: 0}
 --- !u!1 &3347398057580208024
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +449,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotTrigger
   side: 1
-  forkController: {fileID: 0}
 --- !u!1 &3703980208750825566
 GameObject:
   m_ObjectHideFlags: 0
@@ -856,7 +884,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotTrigger
   side: 0
-  forkController: {fileID: 0}
 --- !u!1 &7234822060704211872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,4 +1173,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlotTrigger
   side: 2
-  forkController: {fileID: 0}

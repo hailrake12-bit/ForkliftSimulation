@@ -6,7 +6,6 @@ public class GameInstaller : MonoInstaller
     {
         Container.Bind<ForkliftController>().FromComponentInHierarchy().AsSingle();
         Container.Bind<ForkController>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<GameManager>().FromComponentInHierarchy().AsSingle();
         Container.Bind<CargoFactory>().FromComponentInHierarchy().AsSingle();
         Container.Bind<DashboardUI>().FromComponentInHierarchy().AsSingle();
         Container.Bind<UnloadZone>().FromComponentInHierarchy().AsSingle();
