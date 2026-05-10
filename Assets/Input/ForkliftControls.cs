@@ -127,6 +127,15 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""19b5ffd7-c54a-4e81-9557-14f490a68cc3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -217,6 +226,17 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
                     ""action"": ""EngineStart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a18ceafc-79b0-4664-a073-a68a28a3fa3a"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -229,6 +249,7 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         m_Forklift_ForkUp = m_Forklift.FindAction("ForkUp", throwIfNotFound: true);
         m_Forklift_ForkDown = m_Forklift.FindAction("ForkDown", throwIfNotFound: true);
         m_Forklift_EngineStart = m_Forklift.FindAction("EngineStart", throwIfNotFound: true);
+        m_Forklift_Look = m_Forklift.FindAction("Look", throwIfNotFound: true);
     }
 
     ~@ForkliftControls()
@@ -313,6 +334,7 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Forklift_ForkUp;
     private readonly InputAction m_Forklift_ForkDown;
     private readonly InputAction m_Forklift_EngineStart;
+    private readonly InputAction m_Forklift_Look;
     /// <summary>
     /// Provides access to input actions defined in input action map "Forklift".
     /// </summary>
@@ -340,6 +362,10 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Forklift/EngineStart".
         /// </summary>
         public InputAction @EngineStart => m_Wrapper.m_Forklift_EngineStart;
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/Look".
+        /// </summary>
+        public InputAction @Look => m_Wrapper.m_Forklift_Look;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -378,6 +404,9 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
             @EngineStart.started += instance.OnEngineStart;
             @EngineStart.performed += instance.OnEngineStart;
             @EngineStart.canceled += instance.OnEngineStart;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
         }
 
         /// <summary>
@@ -401,6 +430,9 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
             @EngineStart.started -= instance.OnEngineStart;
             @EngineStart.performed -= instance.OnEngineStart;
             @EngineStart.canceled -= instance.OnEngineStart;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
         }
 
         /// <summary>
@@ -469,5 +501,12 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEngineStart(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLook(InputAction.CallbackContext context);
     }
 }

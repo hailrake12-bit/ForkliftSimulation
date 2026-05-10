@@ -15,7 +15,9 @@ public class ForkliftController : MonoBehaviour
 
     private Rigidbody _rb;
     private ForkliftControls _controls;
+    private float _forkMinYWithCargo = 0.219f;
     private bool _engineRunning = false;
+    private bool _hasCargoAttached = false;
 
     private void Awake()
     {
@@ -44,7 +46,6 @@ public class ForkliftController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_engineRunning) return;
-
         HandleMovement();
         HandleFork();
     }
@@ -66,12 +67,18 @@ public class ForkliftController : MonoBehaviour
         if (forkAssembly == null) return;
 
         float forkInput = 0f;
-
         if (_controls.Forklift.ForkUp.IsPressed()) forkInput = 1f;
         if (_controls.Forklift.ForkDown.IsPressed()) forkInput = -1f;
 
+        float currentMinY = _hasCargoAttached ? _forkMinYWithCargo : forkMinY;
+
         Vector3 pos = forkAssembly.localPosition;
-        pos.y = Mathf.Clamp(pos.y + forkInput * forkSpeed * Time.fixedDeltaTime, forkMinY, forkMaxY);
+        pos.y = Mathf.Clamp(pos.y + forkInput * forkSpeed * Time.fixedDeltaTime, currentMinY, forkMaxY);
         forkAssembly.localPosition = pos;
+    }
+
+    public void SetCargoAttached(bool value)
+    {
+        _hasCargoAttached = value;
     }
 }
