@@ -151,6 +151,8 @@ MonoBehaviour:
   spawnHeight: 10
   spawnDuration: 5
   rotationSpeed: 90
+  launchHeight: 60
+  launchDuration: 5
 --- !u!65 &5205045348916097309
 BoxCollider:
   m_ObjectHideFlags: 0
