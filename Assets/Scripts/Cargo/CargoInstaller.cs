@@ -6,6 +6,5 @@ public class CargoInstaller : MonoInstaller
     {
         Container.Bind<SlotTrigger>().FromComponentInHierarchy().AsSingle();
         Container.Bind<CargoTrigger>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<CargoFactory>().FromComponentInHierarchy().AsSingle();
     }
 }

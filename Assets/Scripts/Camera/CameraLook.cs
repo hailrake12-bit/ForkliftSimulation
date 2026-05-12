@@ -3,11 +3,11 @@ using UnityEngine;
 public class CameraLook : MonoBehaviour
 {
     [SerializeField] private float sensitivity = 2f;
-    [SerializeField] private float minPitch = -30f;
-    [SerializeField] private float maxPitch = 60f;
-    [SerializeField] private float minYaw = -60f;
-    [SerializeField] private float maxYaw = 60f;
 
+    private float minPitch = -75f;
+    private float maxPitch = 60f;
+    private float minYaw = -60f;
+    private float maxYaw = 60f;
     private float _pitch = 0f;
     private float _yaw = 0f;
     private ForkliftControls _controls;
@@ -17,9 +17,16 @@ public class CameraLook : MonoBehaviour
         _controls = new ForkliftControls();
     }
 
-    private void OnEnable() => _controls.Enable();
+    private void OnEnable()
+    {
+        _controls ??= new ForkliftControls();
+        _controls.Enable();
+    }
 
-    private void OnDisable() => _controls.Disable();
+    private void OnDisable()
+    {
+        _controls.Disable();
+    }
 
     private void Start()
     {

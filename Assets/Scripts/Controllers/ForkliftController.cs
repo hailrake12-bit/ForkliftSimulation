@@ -58,7 +58,6 @@ public class ForkliftController : MonoBehaviour
     private void OnEngineStart(InputAction.CallbackContext context)
     {
         _engineRunning = !_engineRunning;
-        Debug.Log(_engineRunning ? "Двигатель запущен" : "Двигатель выключен");
     }
 
     private void FixedUpdate()

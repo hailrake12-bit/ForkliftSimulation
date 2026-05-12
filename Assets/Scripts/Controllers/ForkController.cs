@@ -4,7 +4,6 @@ using Zenject;
 public class ForkController : MonoBehaviour
 {
     [SerializeField] private Transform forkAssembly;
-    [SerializeField] private float unloadMinHeight = 0.219f;
 
     [Inject] private ForkliftController _forkliftController;
 
@@ -12,11 +11,15 @@ public class ForkController : MonoBehaviour
     private Rigidbody _cargoRb;
     private Collider[] _cargoColliders;
     private CargoAnimator _detachedCargo;
+
+    private float unloadMinHeight = 0.219f;
     private float _detachTimer = 0f;
+
     private bool _waitingForLaunch = false;
     private bool _isCargoAttached = false;
     private bool _isInUnloadZone = false;
     private bool _wasDelivered = false;
+
     private SlotSide? _tipSlot = null;
     private SlotSide? _baseSlot = null;
 

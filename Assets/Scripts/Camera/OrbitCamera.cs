@@ -6,11 +6,11 @@ public class OrbitCamera : MonoBehaviour
     [SerializeField] private Transform target;
     [SerializeField] private float distance = 8f;
     [SerializeField] private float sensitivity = 3f;
-    [SerializeField] private float initialPitch = 20f;
-    [SerializeField] private float initialYaw = 0f;
-    [SerializeField] private float minPitch = -10f;
-    [SerializeField] private float maxPitch = 80f;
 
+    private float initialPitch = 20f;
+    private float initialYaw = 0f;
+    private float minPitch = 10f;
+    private float maxPitch = 80f;
     private float _yaw;
     private float _pitch;
 
