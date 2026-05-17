@@ -109,3 +109,4 @@ InitTestScene*.unity*
 # Added personally 
 *.vsconfig
 *.slnx
+/[Aa]ssets/_Recovery
