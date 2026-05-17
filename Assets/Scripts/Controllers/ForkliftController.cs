@@ -9,11 +9,14 @@ public class ForkliftController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float turnSpeed = 60f;
 
-    [Header("Fork Settings")]
-    [SerializeField] private Transform forkAssembly;
-    [SerializeField] private float forkSpeed = 1f;
-    [SerializeField] private float forkMinY = 0.1f;
-    [SerializeField] private float forkMaxY = 2f;
+    [Header("Carriage Settings")]
+    [SerializeField] private ConfigurableJoint carriageJoint;
+    [SerializeField] private float liftSpeed = 0.5f;
+
+    [Header("Mast Settings")]
+    [SerializeField] private HingeJoint mastJoint;
+    [SerializeField] private float tiltSpeed = 20f;
+    [SerializeField] private float mastHoldForce = 5000f;
 
     [Header("Fuel Settings")]
     [SerializeField] private float maxFuel = 100f;
@@ -28,9 +31,17 @@ public class ForkliftController : MonoBehaviour
     private Rigidbody _rb;
     private ForkliftControls _controls;
     private ReactiveProperty<float> _currentFuel = new ReactiveProperty<float>();
-    private float _forkMinYWithCargo = 0.219f;
+    private float _currentLiftHeight = 0f;
+
+
+    private float _currentMastAngle = 0f;
+    [SerializeField] private float mastMinAngle = -5f;
+    [SerializeField] private float mastMaxAngle = 3f;
+
+
+    private float liftMin = 0f;
+    private float liftMax = 100f;
     private bool _engineRunning = false;
-    private bool _hasCargoAttached = false;
 
     private void Start()
     {
@@ -63,14 +74,17 @@ public class ForkliftController : MonoBehaviour
     private void FixedUpdate()
     {
         if (!_engineRunning) return;
+
         if (_currentFuel.Value <= 0f)
         {
             _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
             return;
         }
+
         ConsumeFuel();
         HandleMovement();
-        HandleFork();
+        HandleLift();
+        HandleMastTilt();
     }
 
     private void HandleMovement()
@@ -96,9 +110,9 @@ public class ForkliftController : MonoBehaviour
         _currentFuel.Value = Mathf.Max(0f, _currentFuel.Value - consumption * Time.fixedDeltaTime);
     }
 
-    private void HandleFork()
+    /*private void HandleFork()
     {
-        if (forkAssembly == null) return;
+        if (forkAssembly == null || _forkRb == null) return;
 
         float forkInput = 0f;
         if (_controls.Forklift.ForkUp.IsPressed()) forkInput = 1f;
@@ -106,13 +120,63 @@ public class ForkliftController : MonoBehaviour
 
         float currentMinY = _hasCargoAttached ? _forkMinYWithCargo : forkMinY;
 
-        Vector3 pos = forkAssembly.localPosition;
-        pos.y = Mathf.Clamp(pos.y + forkInput * forkSpeed * Time.fixedDeltaTime, currentMinY, forkMaxY);
-        forkAssembly.localPosition = pos;
+        float localY = forkAssembly.localPosition.y;
+        localY = Mathf.Clamp(
+            localY + forkInput * forkSpeed * Time.fixedDeltaTime,
+            currentMinY,
+            forkMaxY
+        );
+
+        Vector3 worldTarget = transform.TransformPoint(
+            new Vector3(forkAssembly.localPosition.x, localY, forkAssembly.localPosition.z)
+        );
+        _forkRb.MovePosition(worldTarget);
+    }*/
+
+    private void HandleLift()
+    {
+        if (carriageJoint == null) return;
+
+        float liftInput = 0f;
+        if (_controls.Forklift.ForkUp.IsPressed()) liftInput = 1f;
+        if (_controls.Forklift.ForkDown.IsPressed()) liftInput = -1f;
+
+        // Накапливаем целевую высоту
+
+        _currentLiftHeight = Mathf.Clamp(
+            _currentLiftHeight + liftInput * liftSpeed * Time.fixedDeltaTime,
+            liftMin,
+            liftMax
+        );
+
+        // Говорим джойнту куда тянуть каретку
+        carriageJoint.targetPosition = new Vector3(0f, -_currentLiftHeight, 0f);
+
+        //Debug.Log($"target={_currentLiftHeight}, carriageY={carriageJoint.transform.localPosition.y}");
     }
 
-    public void SetCargoAttached(bool value)
+    private void HandleMastTilt()
     {
-        _hasCargoAttached = value;
+        if (mastJoint == null) return;
+
+        float tiltInput = 0f;
+        if (Keyboard.current.zKey.isPressed) tiltInput = 1f;
+        if (Keyboard.current.xKey.isPressed) tiltInput = -1f;
+
+        float minAngle = mastJoint.limits.min;
+        float maxAngle = mastJoint.limits.max;
+
+        _currentMastAngle = Mathf.Clamp(
+            _currentMastAngle + tiltInput * tiltSpeed * Time.fixedDeltaTime,
+            minAngle,
+            maxAngle
+        );
+
+        JointSpring spring = mastJoint.spring;
+        spring.targetPosition = _currentMastAngle;
+        mastJoint.spring = spring;
+
+        Debug.Log($"target={_currentMastAngle}, mastZ={mastJoint.transform.localPosition.z}");
     }
+
 }

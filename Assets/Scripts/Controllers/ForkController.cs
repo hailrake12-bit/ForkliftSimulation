@@ -28,7 +28,7 @@ public class ForkController : MonoBehaviour
         if (_isCargoAttached) return;
         if (isTip) _tipSlot = side;
         else _baseSlot = side;
-        CheckAttach();
+        //CheckAttach();
     }
 
     public void OnForkExitSlot(SlotSide side, bool isTip)
@@ -46,7 +46,7 @@ public class ForkController : MonoBehaviour
         _wasDelivered = false;
     }
 
-    private void CheckAttach()
+    /*private void CheckAttach()
     {
         if (_tipSlot == null || _baseSlot == null) return;
 
@@ -123,7 +123,7 @@ public class ForkController : MonoBehaviour
                 _detachedCargo?.StartLaunchAnimation();
             }
         }
-    }
+    }*/
 
     public void SetInUnloadZone(bool value)
     {
