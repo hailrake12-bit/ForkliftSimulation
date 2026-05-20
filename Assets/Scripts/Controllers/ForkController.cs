@@ -12,7 +12,7 @@ public class ForkController : MonoBehaviour
     private Collider[] _cargoColliders;
     private CargoAnimator _detachedCargo;
 
-    private float unloadMinHeight = 0.219f;
+    private float _unloadMinHeight = 0.219f;
     private float _detachTimer = 0f;
 
     private bool _waitingForLaunch = false;

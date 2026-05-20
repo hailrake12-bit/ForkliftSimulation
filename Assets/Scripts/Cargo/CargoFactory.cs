@@ -4,8 +4,6 @@ using Zenject;
 public class CargoFactory : MonoBehaviour
 {
     [SerializeField] private GameObject cargoPrefab;
-    [SerializeField] private Transform spawnPoint;
-
     private DiContainer _container;
 
     [Inject]
@@ -21,6 +19,6 @@ public class CargoFactory : MonoBehaviour
 
     public void SpawnCargo()
     {
-        _container.InstantiatePrefab(cargoPrefab, spawnPoint.position, Quaternion.identity, null);
+        _container.InstantiatePrefab(cargoPrefab, transform.position, Quaternion.identity, null);
     }
 }

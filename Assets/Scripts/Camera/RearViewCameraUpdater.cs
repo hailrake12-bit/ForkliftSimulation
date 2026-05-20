@@ -4,19 +4,18 @@ using UnityEngine.Rendering;
 public class RearViewCameraUpdater : MonoBehaviour
 {
     [Tooltip("Сколько раз в секунду обновляется зеркало")]
-    [SerializeField] private float _refreshRate = 20f;
+    [SerializeField] private float refreshRate = 20f;
+    [SerializeField] private Camera rearCamera;
 
-    private Camera _camera;
     private float _interval;
     private float _timer;
 
     private void Awake()
     {
-        _camera = GetComponent<Camera>();
 
-        _camera.enabled = false;
+        rearCamera.enabled = false;
 
-        _interval = 1f / _refreshRate;
+        _interval = 1f / refreshRate;
     }
 
     private void LateUpdate()
@@ -34,10 +33,10 @@ public class RearViewCameraUpdater : MonoBehaviour
     {
         var request = new RenderPipeline.StandardRequest
         {
-            destination = _camera.targetTexture
+            destination = rearCamera.targetTexture
         };
 
-        if (RenderPipeline.SupportsRenderRequest(_camera, request))
-            RenderPipeline.SubmitRenderRequest(_camera, request);
+        if (RenderPipeline.SupportsRenderRequest(rearCamera, request))
+            RenderPipeline.SubmitRenderRequest(rearCamera, request);
     }
 }

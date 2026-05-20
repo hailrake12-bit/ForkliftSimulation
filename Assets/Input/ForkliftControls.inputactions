@@ -7,6 +7,33 @@
             "id": "f8197c52-b716-45de-baa1-b02d9f7ccd8c",
             "actions": [
                 {
+                    "name": "FpvLook",
+                    "type": "Value",
+                    "id": "19b5ffd7-c54a-4e81-9557-14f490a68cc3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ThrdpvLookMove",
+                    "type": "Value",
+                    "id": "b99cca0e-2acf-4fdc-9f50-26530b78fc86",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "ThrdpvLookActivate",
+                    "type": "Button",
+                    "id": "10e7fa7a-8027-422d-bce8-cdaf6be31efa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Move",
                     "type": "Value",
                     "id": "f43c653a-3c2e-474b-9bde-c73e8cde201b",
@@ -43,13 +70,13 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Look",
-                    "type": "Value",
-                    "id": "19b5ffd7-c54a-4e81-9557-14f490a68cc3",
-                    "expectedControlType": "Vector2",
+                    "name": "SwitchCamera",
+                    "type": "Button",
+                    "id": "f8e05370-3bdb-42e9-83e2-356bd485c43c",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -148,7 +175,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "FpvLook",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eb82723f-bc28-4e4a-8b0a-bf2497a97f8f",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchCamera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7753315f-e506-445c-ab45-90d4d2ac78a7",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrdpvLookMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0669fcc5-863f-443c-9706-eb276a46263c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrdpvLookActivate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

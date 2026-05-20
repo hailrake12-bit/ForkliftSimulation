@@ -3,18 +3,34 @@ using UnityEngine.InputSystem;
 
 public class CameraSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject mainCamera;
-    [SerializeField] private GameObject debugCamera;
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Camera debugCamera;
 
+    private ForkliftControls _controls;
     private bool _isMainCamera = true;
 
-    private void Update()
+    private void Awake()
     {
-        if (Keyboard.current.cKey.wasPressedThisFrame)
-        {
-            _isMainCamera = !_isMainCamera;
-            mainCamera.SetActive(_isMainCamera);
-            debugCamera.SetActive(!_isMainCamera);
-        }
+        _controls = new ForkliftControls();
+    }
+
+    private void OnEnable()
+    {
+        _controls.Forklift.SwitchCamera.performed += OnSwitchCamera;
+        _controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _controls.Forklift.SwitchCamera.performed -= OnSwitchCamera;
+        _controls.Enable();
+    }
+
+    private void OnSwitchCamera(InputAction.CallbackContext context)
+    {
+        Debug.Log("SwitchCamera triggered");
+        _isMainCamera = !_isMainCamera;
+        mainCamera.enabled = _isMainCamera;
+        debugCamera.enabled = !_isMainCamera;
     }
 }

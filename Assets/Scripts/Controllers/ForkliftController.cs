@@ -176,7 +176,7 @@ public class ForkliftController : MonoBehaviour
         spring.targetPosition = _currentMastAngle;
         mastJoint.spring = spring;
 
-        Debug.Log($"target={_currentMastAngle}, mastZ={mastJoint.transform.localPosition.z}");
+        //Debug.Log($"target={_currentMastAngle}, mastZ={mastJoint.transform.localPosition.z}");
     }
 
 }

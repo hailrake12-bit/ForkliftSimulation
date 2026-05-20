@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using UniRx;
 using Zenject;
+using System;
 
 public class DashboardUI : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class DashboardUI : MonoBehaviour
             "C - поменять камеру";
 
         _forkliftController.FuelStream
+            .Sample(TimeSpan.FromSeconds(0.5f)) 
             .Subscribe(fuel =>
             {
                 fuelSlider.value = fuel / _forkliftController.MaxFuel;

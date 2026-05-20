@@ -93,6 +93,33 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
             ""id"": ""f8197c52-b716-45de-baa1-b02d9f7ccd8c"",
             ""actions"": [
                 {
+                    ""name"": ""FpvLook"",
+                    ""type"": ""Value"",
+                    ""id"": ""19b5ffd7-c54a-4e81-9557-14f490a68cc3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ThrdpvLookMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""b99cca0e-2acf-4fdc-9f50-26530b78fc86"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ThrdpvLookActivate"",
+                    ""type"": ""Button"",
+                    ""id"": ""10e7fa7a-8027-422d-bce8-cdaf6be31efa"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""f43c653a-3c2e-474b-9bde-c73e8cde201b"",
@@ -129,13 +156,13 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""19b5ffd7-c54a-4e81-9557-14f490a68cc3"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""SwitchCamera"",
+                    ""type"": ""Button"",
+                    ""id"": ""f8e05370-3bdb-42e9-83e2-356bd485c43c"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -234,7 +261,40 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""FpvLook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb82723f-bc28-4e4a-8b0a-bf2497a97f8f"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchCamera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7753315f-e506-445c-ab45-90d4d2ac78a7"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ThrdpvLookMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0669fcc5-863f-443c-9706-eb276a46263c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ThrdpvLookActivate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -245,11 +305,14 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
 }");
         // Forklift
         m_Forklift = asset.FindActionMap("Forklift", throwIfNotFound: true);
+        m_Forklift_FpvLook = m_Forklift.FindAction("FpvLook", throwIfNotFound: true);
+        m_Forklift_ThrdpvLookMove = m_Forklift.FindAction("ThrdpvLookMove", throwIfNotFound: true);
+        m_Forklift_ThrdpvLookActivate = m_Forklift.FindAction("ThrdpvLookActivate", throwIfNotFound: true);
         m_Forklift_Move = m_Forklift.FindAction("Move", throwIfNotFound: true);
         m_Forklift_ForkUp = m_Forklift.FindAction("ForkUp", throwIfNotFound: true);
         m_Forklift_ForkDown = m_Forklift.FindAction("ForkDown", throwIfNotFound: true);
         m_Forklift_EngineStart = m_Forklift.FindAction("EngineStart", throwIfNotFound: true);
-        m_Forklift_Look = m_Forklift.FindAction("Look", throwIfNotFound: true);
+        m_Forklift_SwitchCamera = m_Forklift.FindAction("SwitchCamera", throwIfNotFound: true);
     }
 
     ~@ForkliftControls()
@@ -330,11 +393,14 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
     // Forklift
     private readonly InputActionMap m_Forklift;
     private List<IForkliftActions> m_ForkliftActionsCallbackInterfaces = new List<IForkliftActions>();
+    private readonly InputAction m_Forklift_FpvLook;
+    private readonly InputAction m_Forklift_ThrdpvLookMove;
+    private readonly InputAction m_Forklift_ThrdpvLookActivate;
     private readonly InputAction m_Forklift_Move;
     private readonly InputAction m_Forklift_ForkUp;
     private readonly InputAction m_Forklift_ForkDown;
     private readonly InputAction m_Forklift_EngineStart;
-    private readonly InputAction m_Forklift_Look;
+    private readonly InputAction m_Forklift_SwitchCamera;
     /// <summary>
     /// Provides access to input actions defined in input action map "Forklift".
     /// </summary>
@@ -346,6 +412,18 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public ForkliftActions(@ForkliftControls wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/FpvLook".
+        /// </summary>
+        public InputAction @FpvLook => m_Wrapper.m_Forklift_FpvLook;
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/ThrdpvLookMove".
+        /// </summary>
+        public InputAction @ThrdpvLookMove => m_Wrapper.m_Forklift_ThrdpvLookMove;
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/ThrdpvLookActivate".
+        /// </summary>
+        public InputAction @ThrdpvLookActivate => m_Wrapper.m_Forklift_ThrdpvLookActivate;
         /// <summary>
         /// Provides access to the underlying input action "Forklift/Move".
         /// </summary>
@@ -363,9 +441,9 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @EngineStart => m_Wrapper.m_Forklift_EngineStart;
         /// <summary>
-        /// Provides access to the underlying input action "Forklift/Look".
+        /// Provides access to the underlying input action "Forklift/SwitchCamera".
         /// </summary>
-        public InputAction @Look => m_Wrapper.m_Forklift_Look;
+        public InputAction @SwitchCamera => m_Wrapper.m_Forklift_SwitchCamera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -392,6 +470,15 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ForkliftActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ForkliftActionsCallbackInterfaces.Add(instance);
+            @FpvLook.started += instance.OnFpvLook;
+            @FpvLook.performed += instance.OnFpvLook;
+            @FpvLook.canceled += instance.OnFpvLook;
+            @ThrdpvLookMove.started += instance.OnThrdpvLookMove;
+            @ThrdpvLookMove.performed += instance.OnThrdpvLookMove;
+            @ThrdpvLookMove.canceled += instance.OnThrdpvLookMove;
+            @ThrdpvLookActivate.started += instance.OnThrdpvLookActivate;
+            @ThrdpvLookActivate.performed += instance.OnThrdpvLookActivate;
+            @ThrdpvLookActivate.canceled += instance.OnThrdpvLookActivate;
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -404,9 +491,9 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
             @EngineStart.started += instance.OnEngineStart;
             @EngineStart.performed += instance.OnEngineStart;
             @EngineStart.canceled += instance.OnEngineStart;
-            @Look.started += instance.OnLook;
-            @Look.performed += instance.OnLook;
-            @Look.canceled += instance.OnLook;
+            @SwitchCamera.started += instance.OnSwitchCamera;
+            @SwitchCamera.performed += instance.OnSwitchCamera;
+            @SwitchCamera.canceled += instance.OnSwitchCamera;
         }
 
         /// <summary>
@@ -418,6 +505,15 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// <seealso cref="ForkliftActions" />
         private void UnregisterCallbacks(IForkliftActions instance)
         {
+            @FpvLook.started -= instance.OnFpvLook;
+            @FpvLook.performed -= instance.OnFpvLook;
+            @FpvLook.canceled -= instance.OnFpvLook;
+            @ThrdpvLookMove.started -= instance.OnThrdpvLookMove;
+            @ThrdpvLookMove.performed -= instance.OnThrdpvLookMove;
+            @ThrdpvLookMove.canceled -= instance.OnThrdpvLookMove;
+            @ThrdpvLookActivate.started -= instance.OnThrdpvLookActivate;
+            @ThrdpvLookActivate.performed -= instance.OnThrdpvLookActivate;
+            @ThrdpvLookActivate.canceled -= instance.OnThrdpvLookActivate;
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
@@ -430,9 +526,9 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
             @EngineStart.started -= instance.OnEngineStart;
             @EngineStart.performed -= instance.OnEngineStart;
             @EngineStart.canceled -= instance.OnEngineStart;
-            @Look.started -= instance.OnLook;
-            @Look.performed -= instance.OnLook;
-            @Look.canceled -= instance.OnLook;
+            @SwitchCamera.started -= instance.OnSwitchCamera;
+            @SwitchCamera.performed -= instance.OnSwitchCamera;
+            @SwitchCamera.canceled -= instance.OnSwitchCamera;
         }
 
         /// <summary>
@@ -474,6 +570,27 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
     public interface IForkliftActions
     {
         /// <summary>
+        /// Method invoked when associated input action "FpvLook" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFpvLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ThrdpvLookMove" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnThrdpvLookMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ThrdpvLookActivate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnThrdpvLookActivate(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -502,11 +619,11 @@ public partial class @ForkliftControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEngineStart(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Look" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "SwitchCamera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnLook(InputAction.CallbackContext context);
+        void OnSwitchCamera(InputAction.CallbackContext context);
     }
 }
