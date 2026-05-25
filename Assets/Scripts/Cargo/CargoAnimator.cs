@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using DG.Tweening;
 using Zenject;
 
@@ -42,9 +43,9 @@ public class CargoAnimator : MonoBehaviour
         transform.DORotate(new Vector3(360, 360, 360), launchDuration * 0.7f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
             .SetDelay(launchDuration * 0.3f)
-            .OnComplete(() =>
+            .OnComplete(async () =>
             {
-                _cargoFactory.SpawnCargo();
+                await _cargoFactory.SpawnCargo();
                 Destroy(gameObject);
             });
     }

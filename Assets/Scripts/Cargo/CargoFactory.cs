@@ -1,9 +1,13 @@
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 public class CargoFactory : MonoBehaviour
 {
-    [SerializeField] private GameObject cargoPrefab;
+    [SerializeField] private AssetReference cargoPrefab;
+    private AsyncOperationHandle<GameObject> _handle;
     private DiContainer _container;
 
     [Inject]
@@ -12,13 +16,23 @@ public class CargoFactory : MonoBehaviour
         _container = container;
     }
 
-    public GameObject Create(Vector3 position)
+    private async void Start()
     {
-        return _container.InstantiatePrefab(cargoPrefab, position, Quaternion.identity, null);
+        await SpawnCargo();
     }
 
-    public void SpawnCargo()
+    public async Task<GameObject> SpawnCargo()
     {
-        _container.InstantiatePrefab(cargoPrefab, transform.position, Quaternion.identity, null);
+        if (!_handle.IsValid())
+            _handle = cargoPrefab.LoadAssetAsync<GameObject>();
+
+        await _handle.Task;
+        return _container.InstantiatePrefab(_handle.Result, transform.position, Quaternion.identity, null);
+    }
+
+    private void OnDestroy()
+    {
+        if (_handle.IsValid())
+            Addressables.Release(_handle);
     }
 }
