@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "ForkliftControls",
+    "name": "ForkliftInputs",
     "maps": [
         {
             "name": "Forklift",
@@ -25,15 +25,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ThrdpvLookActivate",
-                    "type": "Button",
-                    "id": "10e7fa7a-8027-422d-bce8-cdaf6be31efa",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Move",
                     "type": "Value",
                     "id": "f43c653a-3c2e-474b-9bde-c73e8cde201b",
@@ -43,18 +34,36 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ForkUp",
+                    "name": "MoveMast",
+                    "type": "Value",
+                    "id": "5c0cf2dc-7d0d-49c0-9414-7e0d54dd8afe",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MoveFork",
+                    "type": "Value",
+                    "id": "094e6bf3-819d-4431-bb41-f6184b799168",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwitchCamera",
                     "type": "Button",
-                    "id": "f8bf9f4c-9600-4e56-a8c9-8aece8d60104",
+                    "id": "f8e05370-3bdb-42e9-83e2-356bd485c43c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ForkDown",
+                    "name": "ThrdpvLookActivate",
                     "type": "Button",
-                    "id": "6b6c9a14-1493-43d9-b340-d24234633abc",
+                    "id": "10e7fa7a-8027-422d-bce8-cdaf6be31efa",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -64,15 +73,6 @@
                     "name": "EngineStart",
                     "type": "Button",
                     "id": "198aaeca-5855-4b89-979b-1935d63abf01",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwitchCamera",
-                    "type": "Button",
-                    "id": "f8e05370-3bdb-42e9-83e2-356bd485c43c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -137,28 +137,6 @@
                 },
                 {
                     "name": "",
-                    "id": "293a2ae8-2daa-4280-9fc7-919de2a36c33",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ForkUp",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "96367d74-77e9-4cff-9e3c-4c191a16d4ca",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ForkDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5a00c243-070f-4227-92f4-ddfed2aa27bd",
                     "path": "<Keyboard>/t",
                     "interactions": "",
@@ -211,6 +189,72 @@
                     "action": "ThrdpvLookActivate",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "3d781c62-b05f-44b8-ad75-4f7bed7c943a",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveMast",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "c3da3013-6a25-4027-9c9b-81053981979a",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveMast",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "7a4a917f-df23-4c23-a10e-66e8386f4014",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveMast",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "6a2ce795-e743-4700-a818-2b9e37820f5a",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveFork",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "46286d48-aa65-493b-91a0-2fed78f9e630",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveFork",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d60c733e-825c-458a-b130-459edd921440",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveFork",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

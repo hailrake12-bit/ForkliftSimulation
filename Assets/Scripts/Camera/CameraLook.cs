@@ -1,42 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class CameraLook : MonoBehaviour
 {
     [SerializeField] private float sensitivity = 2f;
 
+    [Inject] private ForkliftInputs _controls;
+
     private float _minPitch = -75f;
     private float _maxPitch = 60f;
+    private float _pitch = 0f;
+
     private float _minYaw = -60f;
     private float _maxYaw = 60f;
-    private float _pitch = 0f;
     private float _yaw = 0f;
-    private ForkliftControls _controls;
+
     private Vector2 _lookInput;
-
-    private void Awake()
-    {
-        _controls = new ForkliftControls();
-    }
-
-    private void OnEnable()
-    {
-        _controls.Forklift.FpvLook.performed += OnLook;
-        _controls.Forklift.FpvLook.canceled += OnLook;
-        _controls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _controls.Forklift.FpvLook.performed -= OnLook;
-        _controls.Forklift.FpvLook.canceled -= OnLook;
-        _controls.Disable();
-    }
-
-    private void OnLook(InputAction.CallbackContext context)
-    {
-        _lookInput = context.ReadValue<Vector2>();
-    }
 
     private void Start()
     {
@@ -56,4 +36,26 @@ public class CameraLook : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_pitch, _yaw, 0f);
     }
+
+
+
+
+    private void OnEnable()
+    {
+        _controls.Enable();
+
+        _controls.Forklift.FpvLook.performed += OnLookPerformed;
+        _controls.Forklift.FpvLook.canceled += OnLookCanceled;
+    }
+    private void OnDisable()
+    {
+        _controls.Forklift.FpvLook.performed -= OnLookPerformed;
+        _controls.Forklift.FpvLook.canceled -= OnLookCanceled;
+
+        _controls.Disable();
+    }
+
+    private void OnLookPerformed(InputAction.CallbackContext context) => _lookInput = context.ReadValue<Vector2>();
+
+    private void OnLookCanceled(InputAction.CallbackContext context) => _lookInput = Vector2.zero;
 }

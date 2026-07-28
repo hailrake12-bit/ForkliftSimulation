@@ -1,18 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class CameraSwitcher : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private Camera debugCamera;
 
-    private ForkliftControls _controls;
-    private bool _isMainCamera = true;
-
-    private void Awake()
-    {
-        _controls = new ForkliftControls();
-    }
+    [Inject] private ForkliftInputs _controls;
 
     private void OnEnable()
     {
@@ -28,9 +23,8 @@ public class CameraSwitcher : MonoBehaviour
 
     private void OnSwitchCamera(InputAction.CallbackContext context)
     {
-        Debug.Log("SwitchCamera triggered");
-        _isMainCamera = !_isMainCamera;
-        mainCamera.enabled = _isMainCamera;
-        debugCamera.enabled = !_isMainCamera;
+        bool _isMainCamera = mainCamera.enabled;
+        mainCamera.enabled = !_isMainCamera;
+        debugCamera.enabled = _isMainCamera;
     }
 }
