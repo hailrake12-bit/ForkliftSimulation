@@ -4,10 +4,11 @@ public class GameInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.Bind<ForkliftInputs>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CargoFactory>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<CargoAnimator>().FromComponentInHierarchy().AsSingle();
 
+        Container.Bind<ForkliftInputs>().AsSingle();
         Container.Bind<ForkliftController>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<CargoFactory>().FromComponentInHierarchy().AsSingle();
         Container.Bind<DashboardUI>().FromComponentInHierarchy().AsSingle();
     }
 }

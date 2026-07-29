@@ -4,33 +4,34 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
-public class CargoFactory : MonoBehaviour
+public class CargoFactory : MonoBehaviour, IInitializable, System.IDisposable
 {
-    [SerializeField] private AssetReference cargoPrefab;
+    [SerializeField] private AssetReferenceGameObject cargoPrefab;
+
     private AsyncOperationHandle<GameObject> _handle;
-    private DiContainer _container;
+    private GameObject _cachedPrefab;
 
-    [Inject]
-    public void Construct(DiContainer container)
+
+    public void Initialize()
     {
-        _container = container;
+        LoadPrefabAsync();
     }
 
-    private async void Start()
+    private async void LoadPrefabAsync()
     {
-        await SpawnCargo();
+        _handle = cargoPrefab.LoadAssetAsync<GameObject>();
+        _cachedPrefab = await _handle.Task;
     }
 
-    public async Task<GameObject> SpawnCargo()
+    public async Task<GameObject> SpawnCargoAsync(Vector3 position)
     {
-        if (!_handle.IsValid())
-            _handle = cargoPrefab.LoadAssetAsync<GameObject>();
+        if (_cachedPrefab == null)
+            await _handle.Task;
 
-        await _handle.Task;
-        return _container.InstantiatePrefab(_handle.Result, transform.position, Quaternion.identity, null);
+        return Instantiate(_handle.Result, position, Quaternion.identity);
     }
 
-    private void OnDestroy()
+    public void Dispose()
     {
         if (_handle.IsValid())
             Addressables.Release(_handle);
