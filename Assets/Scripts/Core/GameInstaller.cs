@@ -6,9 +6,11 @@ public class GameInstaller : MonoInstaller
     {
         Container.BindInterfacesAndSelfTo<CargoFactory>().FromComponentInHierarchy().AsSingle();
         Container.BindInterfacesAndSelfTo<CargoAnimator>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<ForkliftInputHandler>().AsSingle();
 
         Container.Bind<ForkliftInputs>().AsSingle();
         Container.Bind<ForkliftController>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ForkliftEngineFuelSystem>().FromComponentInHierarchy().AsSingle();
         Container.Bind<DashboardUI>().FromComponentInHierarchy().AsSingle();
     }
 }
