@@ -163,6 +163,15 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Brake"",
+                    ""type"": ""Button"",
+                    ""id"": ""f2c9dff4-fa5b-47fd-881c-9ad505b02811"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -341,6 +350,17 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
                     ""action"": ""MoveFork"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d993306-d238-405e-9c03-f1e764d4cdac"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Brake"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -357,6 +377,7 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
         m_Forklift_SwitchCamera = m_Forklift.FindAction("SwitchCamera", throwIfNotFound: true);
         m_Forklift_ThrdpvLookActivate = m_Forklift.FindAction("ThrdpvLookActivate", throwIfNotFound: true);
         m_Forklift_EngineStart = m_Forklift.FindAction("EngineStart", throwIfNotFound: true);
+        m_Forklift_Brake = m_Forklift.FindAction("Brake", throwIfNotFound: true);
     }
 
     ~@ForkliftInputs()
@@ -445,6 +466,7 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Forklift_SwitchCamera;
     private readonly InputAction m_Forklift_ThrdpvLookActivate;
     private readonly InputAction m_Forklift_EngineStart;
+    private readonly InputAction m_Forklift_Brake;
     /// <summary>
     /// Provides access to input actions defined in input action map "Forklift".
     /// </summary>
@@ -488,6 +510,10 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Forklift/EngineStart".
         /// </summary>
         public InputAction @EngineStart => m_Wrapper.m_Forklift_EngineStart;
+        /// <summary>
+        /// Provides access to the underlying input action "Forklift/Brake".
+        /// </summary>
+        public InputAction @Brake => m_Wrapper.m_Forklift_Brake;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -538,6 +564,9 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
             @EngineStart.started += instance.OnEngineStart;
             @EngineStart.performed += instance.OnEngineStart;
             @EngineStart.canceled += instance.OnEngineStart;
+            @Brake.started += instance.OnBrake;
+            @Brake.performed += instance.OnBrake;
+            @Brake.canceled += instance.OnBrake;
         }
 
         /// <summary>
@@ -573,6 +602,9 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
             @EngineStart.started -= instance.OnEngineStart;
             @EngineStart.performed -= instance.OnEngineStart;
             @EngineStart.canceled -= instance.OnEngineStart;
+            @Brake.started -= instance.OnBrake;
+            @Brake.performed -= instance.OnBrake;
+            @Brake.canceled -= instance.OnBrake;
         }
 
         /// <summary>
@@ -669,5 +701,12 @@ public partial class @ForkliftInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnEngineStart(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Brake" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBrake(InputAction.CallbackContext context);
     }
 }

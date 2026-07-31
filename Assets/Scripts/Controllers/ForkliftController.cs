@@ -2,7 +2,7 @@ using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;  
+using Zenject;
 
 public class ForkliftController : MonoBehaviour
 {
@@ -35,6 +35,9 @@ public class ForkliftController : MonoBehaviour
     [SerializeField] private float maxMotorTorque = 2000f;
     [SerializeField] private float maxSteerAngle = 30f;
     [SerializeField] private float maxBrakeTorque = 3000f;
+    [SerializeField] private float brakeRampSpeed = 6000f;
+    [SerializeField] private float motorRampSpeed = 3000f;
+    [SerializeField] private float steerRampSpeed = 90f; // градусов в секунду — плавность поворота руля
     [Inject] private ForkliftInputs _controls;
 
     public float MaxFuel => maxFuel;
@@ -47,8 +50,13 @@ public class ForkliftController : MonoBehaviour
     private Vector2 _moveInput;
     private float _liftInput;
     private float _mastInput;
+    private bool _brakeHeld;
     private float _currentLiftHeight = 0.2f;
     private float _currentMastAngle = 0f;
+    private float _currentSteerAngle;
+    private float _currentBrake;
+    private float _currentMotor;
+    public Vector2 CurrentMoveInput => _moveInput;
 
     private Vector3 _wheelVisualRotationOffset = new Vector3(0f, 0f, 90f);
 
@@ -86,21 +94,29 @@ public class ForkliftController : MonoBehaviour
         float fuelPercent = _currentFuel.Value / maxFuel * 100f;
         float speedMultiplier = fuelPercent < lowFuelThreshold ? lowFuelSpeedMultiplier : 1f;
 
-        float motor = _moveInput.y * maxMotorTorque * speedMultiplier;
+        float targetMotor = _brakeHeld ? 0f : _moveInput.y * maxMotorTorque * speedMultiplier;
+        _currentMotor = Mathf.MoveTowards(_currentMotor, targetMotor, motorRampSpeed * Time.fixedDeltaTime);
         float steer = _moveInput.x * maxSteerAngle;
 
         wheelRL.steerAngle = -steer;
         wheelRR.steerAngle = -steer;
 
-        wheelFL.motorTorque = motor;
-        wheelFR.motorTorque = motor;
+        wheelRL.steerAngle = -steer;
+        wheelRR.steerAngle = -steer;
 
-        bool braking = Mathf.Abs(_moveInput.y) < 0.05f;
-        float brake = braking ? maxBrakeTorque : 0f;
-        wheelFL.brakeTorque = brake;
-        wheelFR.brakeTorque = brake;
-        wheelRL.brakeTorque = brake;
-        wheelRR.brakeTorque = brake;
+        wheelFL.motorTorque = _currentMotor;
+        wheelFR.motorTorque = _currentMotor;
+
+        bool braking = _brakeHeld;
+        float forwardSpeedMs = Vector3.Dot(_rb.linearVelocity, transform.forward);
+        float speedKmh = Mathf.Abs(forwardSpeedMs) * 3.6f;
+        float brakeSoftness = Mathf.Clamp01(speedKmh / 3f); 
+        float targetBrake = braking ? maxBrakeTorque * brakeSoftness : 0f;
+        _currentBrake = Mathf.MoveTowards(_currentBrake, targetBrake, brakeRampSpeed * Time.fixedDeltaTime);
+        wheelFL.brakeTorque = _currentBrake;
+        wheelFR.brakeTorque = _currentBrake;
+        wheelRL.brakeTorque = _currentBrake;
+        wheelRR.brakeTorque = _currentBrake;
 
         UpdateWheelVisual(wheelFL, wheelFLVisual);
         UpdateWheelVisual(wheelFR, wheelFRVisual);
@@ -153,6 +169,9 @@ public class ForkliftController : MonoBehaviour
 
         _controls.Forklift.MoveMast.performed += OnMastPerformed;
         _controls.Forklift.MoveMast.canceled += OnMastCanceled;
+
+        _controls.Forklift.Brake.performed += OnBrakePerformed;
+        _controls.Forklift.Brake.canceled += OnBrakeCanceled;
     }
 
     private void OnDisable()
@@ -168,6 +187,9 @@ public class ForkliftController : MonoBehaviour
         _controls.Forklift.MoveMast.performed -= OnMastPerformed;
         _controls.Forklift.MoveMast.canceled -= OnMastCanceled;
 
+        _controls.Forklift.Brake.performed -= OnBrakePerformed;
+        _controls.Forklift.Brake.canceled -= OnBrakeCanceled;
+
         _controls.Disable();
     }
 
@@ -178,4 +200,6 @@ public class ForkliftController : MonoBehaviour
     private void OnLiftCanceled(InputAction.CallbackContext context) => _liftInput = 0f;
     private void OnMastPerformed(InputAction.CallbackContext context) => _mastInput = context.ReadValue<float>();
     private void OnMastCanceled(InputAction.CallbackContext context) => _mastInput = 0f;
+    private void OnBrakePerformed(InputAction.CallbackContext context) => _brakeHeld = true;
+    private void OnBrakeCanceled(InputAction.CallbackContext context) => _brakeHeld = false;
 }

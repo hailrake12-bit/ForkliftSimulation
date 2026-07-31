@@ -25,6 +25,7 @@ public class CargoAnimator : MonoBehaviour, IInitializable
     private async void AnimateSpawn()
     {
         GameObject cargo = await _cargoFactory.SpawnCargoAsync(startZone.position + Vector3.up * spawnHeight);
+        DebugTelemetryHUD.Instance?.RegisterCargo(cargo.GetComponent<Rigidbody>());
         Rigidbody _rb = cargo.GetComponent<Rigidbody>();
         _rb.isKinematic = true;
 
@@ -44,11 +45,12 @@ public class CargoAnimator : MonoBehaviour, IInitializable
         cargo.transform.DOMove(cargo.transform.position + Vector3.up * launchHeight, launchDuration)
             .SetEase(Ease.InExpo);
 
-        cargo.transform.DORotate(new Vector3(360, 360, 360), launchDuration * 0.7f, RotateMode.FastBeyond360)
+        cargo.transform.DORotate(new Vector3(360, 360, 360), launchDuration * 1f, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
-            .SetDelay(launchDuration * 1f)
+            .SetDelay(launchDuration * 0.5f)
             .OnComplete(async () =>
             {
+                DebugTelemetryHUD.Instance?.UnregisterCargo(GetComponent<Rigidbody>());
                 await _cargoFactory.SpawnCargoAsync(startZone.position + Vector3.up * spawnHeight);
                 Destroy(cargo);
             });

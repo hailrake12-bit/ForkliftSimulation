@@ -5,7 +5,7 @@ public class UnloadZone : MonoBehaviour
 {
     private string _cargoTag = "Cargo";
     private string _forkliftTag = "Forklift";
-    private float _checkDelay = 0.3f; 
+    private float _checkDelay = 0.3f;
     private GameObject _currentCargo;
     private bool _forkliftInside;
 
@@ -28,7 +28,7 @@ public class UnloadZone : MonoBehaviour
         if (other.CompareTag(_forkliftTag))
         {
             _forkliftInside = false;
-           
+
             if (_currentCargo != null)
             {
                 Invoke(nameof(TryDeliver), _checkDelay);
@@ -37,10 +37,10 @@ public class UnloadZone : MonoBehaviour
 
         if (other.CompareTag(_cargoTag) && other.gameObject == _currentCargo)
         {
-            
+
             _currentCargo = null;
         }
-    }
+    } 
 
     private void TryDeliver()
     {
