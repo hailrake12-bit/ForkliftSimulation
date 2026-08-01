@@ -9,12 +9,12 @@ public class DebugTelemetryHUD : MonoBehaviour
     [SerializeField] private Rigidbody cargoRb;
 
     [Header("Logging")]
-    [SerializeField] private float logInterval = 0.25f; // как часто писать в консоль регулярный лог
-    [SerializeField] private float slipLogThreshold = 0.03f; // с какой относительной скорости считать это "слипом" и логировать отдельно
+    [SerializeField] private float logInterval = 0.25f;
+    [SerializeField] private float slipLogThreshold = 0.03f; 
     [SerializeField] private bool enableConsoleLog = true;
 
-    [SerializeField] private WheelCollider steerWheelRef; // любое из рулевых колёс (RL или RR), для диагностики руления
-    [SerializeField] private ForkliftController forkliftController; // тот же объект, что и Rigidbody погрузчика
+    [SerializeField] private WheelCollider steerWheelRef; 
+    [SerializeField] private ForkliftMovement forkliftController; 
 
     private Vector3 _lastVelocity;
     private float _currentAccel;

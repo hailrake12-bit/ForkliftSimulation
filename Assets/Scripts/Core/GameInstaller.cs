@@ -9,7 +9,7 @@ public class GameInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<ForkliftInputHandler>().AsSingle();
 
         Container.Bind<ForkliftInputs>().AsSingle();
-        Container.Bind<ForkliftController>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<ForkliftMovement>().FromComponentInHierarchy().AsSingle();
         Container.Bind<ForkliftEngineFuelSystem>().FromComponentInHierarchy().AsSingle();
         Container.Bind<DashboardUI>().FromComponentInHierarchy().AsSingle();
     }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class ForkliftController : MonoBehaviour
+public class ForkliftMovement : MonoBehaviour
 {
     [Header("Carriage Settings")]
     [SerializeField] private ConfigurableJoint carriageJoint;
@@ -37,11 +37,13 @@ public class ForkliftController : MonoBehaviour
     public float MaxFuel => _fuelSystem.MaxFuel;
     public float FuelPercentage => _fuelSystem.FuelPercentage;
     public IObservable<float> FuelStream => _fuelSystem.FuelStream;
+    public float CurrentSpeedKmh => Mathf.Abs(Vector3.Dot(_rb.linearVelocity, transform.forward)) * 3.6f;
 
     private Rigidbody _rb;
     public Vector2 CurrentMoveInput => _inputHandler.MoveInput;
     private float _currentMotor;
     private float _currentBrake;
+    private float _currentSteerAngle;
     private float _currentLiftHeight = 0.2f;
     private float _currentMastAngle = 0f;
     private Vector3 _wheelVisualRotationOffset = new Vector3(0f, 0f, 90f);
@@ -73,19 +75,18 @@ public class ForkliftController : MonoBehaviour
 
         float targetMotor = brakeHeld ? 0f : moveInput.y * maxMotorTorque * _fuelSystem.SpeedMultiplier;
         _currentMotor = Mathf.MoveTowards(_currentMotor, targetMotor, motorRampSpeed * Time.fixedDeltaTime);
-        float steer = moveInput.x * maxSteerAngle;
-
-        wheelRL.steerAngle = -steer;
-        wheelRR.steerAngle = -steer;
-
         wheelFL.motorTorque = _currentMotor;
         wheelFR.motorTorque = _currentMotor;
 
-        bool braking = brakeHeld;
+        float targetSteer = moveInput.x * maxSteerAngle;
+        _currentSteerAngle = Mathf.MoveTowards(_currentSteerAngle, targetSteer, steerRampSpeed * Time.fixedDeltaTime);
+        wheelRL.steerAngle = -_currentSteerAngle;
+        wheelRR.steerAngle = -_currentSteerAngle;
+
         float forwardSpeedMs = Vector3.Dot(_rb.linearVelocity, transform.forward);
         float speedKmh = Mathf.Abs(forwardSpeedMs) * 3.6f;
         float brakeSoftness = Mathf.Clamp01(speedKmh / 3f);
-        float targetBrake = braking ? maxBrakeTorque * brakeSoftness : 0f;
+        float targetBrake = brakeHeld ? maxBrakeTorque * brakeSoftness : 0f;
         _currentBrake = Mathf.MoveTowards(_currentBrake, targetBrake, brakeRampSpeed * Time.fixedDeltaTime);
         wheelFL.brakeTorque = _currentBrake;
         wheelFR.brakeTorque = _currentBrake;

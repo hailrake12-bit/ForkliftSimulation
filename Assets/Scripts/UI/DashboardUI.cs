@@ -11,23 +11,25 @@ public class DashboardUI : MonoBehaviour
     [SerializeField] private TMP_Text fuelPercent;
     [SerializeField] private TMP_Text controlsText;
 
-    [Inject] private ForkliftController _forkliftController;
+    [Inject] private ForkliftMovement _forkliftController;
 
     private void Start()
     {
         controlsText.text =
             "УПРАВЛЕНИЕ:\n" +
-            "T - двигатель вкл/выкл " +
-            "WASD - движение\n" +
-            "Q/E - вилки поднять/опустить " +
-            "C - поменять камеру";
+            "T - двигатель вкл/выкл, " +
+            "WASD - движение,\n" +
+            "Q/E - вилки поднять/опустить, " +
+            "C - поменять камеру,\n" +
+            "Z/X - наклонять мачту, " +
+            "левый Shift - тормоз.";
 
         _forkliftController.FuelStream
             .Sample(TimeSpan.FromSeconds(0.5f)) 
             .Subscribe(fuel =>
             {
                 fuelSlider.value = fuel / _forkliftController.MaxFuel;
-                fuelPercent.text = $"Топлива осталось:{fuel / _forkliftController.MaxFuel * 100f:F0}%";
+                fuelPercent.text = $"{fuel / _forkliftController.MaxFuel * 100f:F0}%";
             })
             .AddTo(this);
     }

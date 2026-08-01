@@ -26,7 +26,6 @@ public class ForkliftInputHandler : IInitializable, IDisposable
 
     public void Initialize()
     {
-        Debug.Log("ForkliftInputHandler.Initialize called");
         _controls.Enable();
 
         _controls.Forklift.EngineStart.performed += OnEngineStart;
